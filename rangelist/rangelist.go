@@ -4,7 +4,10 @@ import (
 	. "cezhang/rangelist/rangelist/core"
 	"cezhang/rangelist/rangelist/redblack"
 	"fmt"
+	"strings"
 )
+
+var print = fmt.Println
 
 // internal is an abstract algorithm interface for RangeList
 type internal interface {
@@ -121,10 +124,11 @@ func (rangeList *RangeList) Print() error {
 	if ls, err := rangeList.List(); err != nil {
 		return err
 	} else {
-		for _, r := range ls {
-			fmt.Printf("[%d,%d) ", r.Start, r.End)
+		s := make([]string, len(ls))
+		for i, r := range ls {
+			s[i] = fmt.Sprintf("[%d, %d)", r.Start, r.End)
 		}
-		fmt.Printf("\n")
+		print(strings.Join(s, " "))
 	}
 	return nil
 }
