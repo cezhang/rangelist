@@ -50,7 +50,7 @@ func (rb *RedBlack) Union(r Range) (o Range, err error) {
 			unionStart = floorStartNode.Key.(int)
 		} else {
 			//     |_____________|  <--- e
-			//  		r.Start ---> |_______________|
+			//          r.Start ---> |_______________|
 			// do nothing here
 		}
 	}
@@ -58,12 +58,12 @@ func (rb *RedBlack) Union(r Range) (o Range, err error) {
 	unionEnd := r.End
 	if floorEndNode, found := rb.rbt.Floor(r.End); found {
 		if floorEnd, ok := floorEndNode.Value.(int); ok {
-			//     						|___________|  <--- floorEnd
+			//                          |___________|  <--- floorEnd
 			//  r.Start ---> |_______________|
 			if floorEnd >= r.End {
 				unionEnd = floorEnd
 			} else {
-				//     					 |____|  <--- floorEnd
+				//                        |____|  <--- floorEnd
 				//  r.Start ---> |_______________|
 				// do nothing here
 			}
@@ -74,11 +74,11 @@ func (rb *RedBlack) Union(r Range) (o Range, err error) {
 }
 
 // Bound returns lists of start of existing range(s) within the given range
-//    |_______|                yes
-//      |_______|              yes
-//                 |_______|   yes
-// 				    |_______|  no
-//    |___________|     <----  input
+//    |_______|                    yes
+//      |_______|                  yes
+//                 |_______|       yes
+//                  |_______|      no
+//    |___________|     <---- input
 func (rb *RedBlack) Bound(r Range) ([]int, error) {
 	out := make([]int, 0)
 	if floorStartNode, found := rb.rbt.Ceiling(r.Start); found {
@@ -131,9 +131,9 @@ func (rb *RedBlack) Diff(r Range) ([]Range, error) {
 	diff := make([]Range, 0)
 	if floorStartNode, found := rb.rbt.Floor(r.Start - 1); found {
 		e := floorStartNode.Value.(int)
-		//   |_______|  <--- e						|_____|      <-- need to insert
-		//                          --- diff ---> 		  |__|   <-- to remove
-		//        |___________|							 |___________|
+		//   |_______|  <--- e	                     |_____|      <-- need to insert
+		//                          --- diff --->         |__|   <-- to remove
+		//        |___________|                           |___________|
 		if e >= r.Start {
 			diff = append(diff, Range{Start: floorStartNode.Key.(int), End: r.Start})
 		}
@@ -142,9 +142,9 @@ func (rb *RedBlack) Diff(r Range) ([]Range, error) {
 
 	if floorEndNode, found := rb.rbt.Floor(r.End - 1); found {
 		floorEnd := floorEndNode.Value.(int)
-		//   				|_______| <--- floorEnd								      |_____|  <-- need to insert
-		//                                				 --- diff ---> 		  	  |__|         <-- to remove
-		//        |___________|							   				 |___________|
+		//                  |_______| <--- floorEnd	                                 |_____|  <-- need to insert
+		//                                               --- diff --->            |__|         <-- to remove
+		//        |___________|	                                         |___________|
 		if floorEnd >= r.End {
 			diff = append(diff, Range{Start: r.End, End: floorEndNode.Value.(int)})
 		}
