@@ -37,4 +37,24 @@ func TestRedBlack(t *testing.T) {
 	listExp := []Range{}
 	assert.Equal(t, listExp, listRes, fmt.Sprintf("List result Should be the same with %v", diffExp))
 	assert.Nilf(t, err, "List should succeed")
+
+}
+
+func TestRedBlackPut(t *testing.T) {
+	putTestcases := map[string]struct {
+		input []int
+		err   error
+	}{
+		"common":    {[]int{1, 5}, nil},
+		"intersect": {[]int{2, 3}, nil},
+		"disjoint":  {[]int{6, 7}, nil},
+	}
+
+	putRB := New()
+	for name, tc := range putTestcases {
+		t.Run(name, func(t *testing.T) {
+			actual := putRB.Put(Range{tc.input[0], tc.input[1]})
+			assert.Nilf(t, actual, "Put should succeed")
+		})
+	}
 }
