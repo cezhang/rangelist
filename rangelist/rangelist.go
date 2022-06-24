@@ -10,7 +10,7 @@ import (
 var print = fmt.Println
 
 // internal is an abstract algorithm interface for RangeList
-type internal interface {
+type ranger interface {
 
 	// Put inserts new range to underlying implementation
 	Put(Range) error
@@ -33,7 +33,7 @@ type internal interface {
 
 // RangeList struct with an underlying algorithm
 type RangeList struct {
-	internal
+	ranger
 }
 
 // New returns RangeList pointer with default RedBlack underlying implementation
@@ -44,7 +44,7 @@ func New() *RangeList {
 }
 
 // NewWith return RangeList pointer with a given underlying implementation
-func NewWith(algo internal) *RangeList {
+func NewWith(algo ranger) *RangeList {
 	return &RangeList{
 		algo,
 	}
